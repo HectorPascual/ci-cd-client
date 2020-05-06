@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
+</head>
+<body>
+<div class="wrapper">
+  <div class="top_navbar">
+    <div class="navbar">
+       <div class="one"></div>
+       <div class="two"></div>
+       <div class="three"></div>
+    </div>
+    <div class="top_menu">
+      <div class="logo">
+         CI-CD-TOOL GUI CLIENT
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+      <ul>
+        <li><a href="#" id="jobs">
+          <span class="title">Jobs</span>
+          </a></li>
+        <li><a href="#" id="nodes">
+          <span class="title">Nodes</span>
+          </a></li>
+    </ul>
+  </div>
+
+  <div class="main_container">
+      {% for job in jobs %}
+      <a id="job_link{{ job.id }}">
+        <div class="item">
+          {{ job.id }} {{ job.title }} {{ job.description }} {{ job.created_date }}
+        </div>
+      </a>
+      {% endfor %}
+      {% if job %}
+        <div class="item">
+          JOB : {{ job.id }} {{ job.title }} {{ job.description }} {{ job.created_date }}
+        </div>
+        {% for build in builds %}
+            <a id="build_link{{ build.id }}" >
+            <div class="item">
+              {{ build.id }} {{ build.commands }} {{ build.description }} {{ build.created_date }}
+            </div>
+          </a>
+        {% endfor %}
+      {% endif %}
+  </div>
+
+</div>
+<script type = "text/javascript">
+    $(".navbar").click(function(){
+       $(".wrapper").toggleClass("collapse");
+    });
+</script>
+<script type = "text/javascript">
+    $('#jobs').click(function(){
+         location.href = window.location.origin+'/jobs';
+    });
+</script>
+<script type = "text/javascript">
+      {% for job in jobs %}
+        $('#job_link{{ job.id }}').click(function(){
+         job_id = '{{ job.id }}'
+         location.href = window.location.origin+'/jobs/'+job_id;
+        });
+      {% endfor %}
+</script>
+</body>
+</html>
