@@ -23,23 +23,35 @@
 
   <div class="sidebar">
       <ul>
-        <li><a href="#" id="jobs">
+        <li><a href="/jobs" id="jobs">
           <span class="title">Jobs</span>
           </a></li>
-        <li><a href="#" id="nodes">
+        <li><a href="/nodes" id="nodes">
           <span class="title">Nodes</span>
           </a></li>
     </ul>
   </div>
 
   <div class="main_container">
+      {% if create_job %}
+        <form action="/jobs" method="POST">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Job title..">
+            <label for="job_desc">Description Name</label>
+            <input type="text" id="job_desc" name="description" placeholder="Job description..">
+            <input type="submit" value="Submit">
+        </form>
+      {% endif %}
+      {% if jobs %}
+        <a href="/create_job" class="button">Create new job</a>
       {% for job in jobs %}
-      <a id="job_link{{ job.id }}">
+      <a href="/jobs/{{ job.id }}" id="job_link{{ job.id }}">
         <div class="item">
           {{ job.id }} {{ job.title }} {{ job.description }} {{ job.created_date }}
         </div>
       </a>
       {% endfor %}
+      {% endif %}
       {% if job %}
         <div class="item">
           JOB : {{ job.id }} {{ job.title }} {{ job.description }} {{ job.created_date }}
@@ -52,6 +64,15 @@
           </a>
         {% endfor %}
       {% endif %}
+      {% if nodes %}
+      {% for node in nodes %}
+      <a id="node_link{{ node.id }}">
+        <div class="item">
+          {{ node.id }} {{ node.workspace }} {{ node.ip_addr }} {{ node.user }}
+        </div>
+      </a>
+      {% endfor %}
+      {% endif %}
   </div>
 
 </div>
@@ -60,18 +81,6 @@
        $(".wrapper").toggleClass("collapse");
     });
 </script>
-<script type = "text/javascript">
-    $('#jobs').click(function(){
-         location.href = window.location.origin+'/jobs';
-    });
-</script>
-<script type = "text/javascript">
-      {% for job in jobs %}
-        $('#job_link{{ job.id }}').click(function(){
-         job_id = '{{ job.id }}'
-         location.href = window.location.origin+'/jobs/'+job_id;
-        });
-      {% endfor %}
-</script>
+
 </body>
 </html>
