@@ -37,9 +37,20 @@
         <form action="/jobs" method="POST">
             <label for="title">Title</label>
             <input type="text" id="title" name="title" placeholder="Job title..">
-            <label for="job_desc">Description Name</label>
+            <label for="job_desc">Description</label>
             <input type="text" id="job_desc" name="description" placeholder="Job description..">
-            <input type="submit" value="Submit">
+            <input type="submit" id="job_submit" value="Submit">
+        </form>
+      {% endif %}
+      {% if create_build %}
+        <form action="/jobs/{{ job_id }}/builds" method="POST">
+            <label for="title">Description</label>
+            <input type="text" id="description" name="description" placeholder="Build description..">
+            <label for="job_desc">Commands</label>
+            <input type="text" id="commands" name="commands" placeholder="Build commands..">
+            <label for="job_desc">Commands</label>
+            <input type="text" id="node" name="node" placeholder="Node id to perform the build..">
+            <input type="submit" id="node_submit" value="Submit">
         </form>
       {% endif %}
       {% if jobs %}
@@ -53,15 +64,16 @@
       {% endfor %}
       {% endif %}
       {% if job %}
+        <a href="/create_build/{{ job.id }}" class="button">Create new build attached to this job</a>
         <div class="item">
           JOB : {{ job.id }} {{ job.title }} {{ job.description }} {{ job.created_date }}
         </div>
         {% for build in builds %}
-            <a id="build_link{{ build.id }}" >
+            <a href="/jobs/{{ job.id }}/builds/{{ build.id }}" id="build_link{{ build.id }}" >
             <div class="item">
               {{ build.id }} {{ build.commands }} {{ build.description }} {{ build.created_date }}
             </div>
-          </a>
+            </a>
         {% endfor %}
       {% endif %}
       {% if nodes %}
@@ -73,6 +85,11 @@
       </a>
       {% endfor %}
       {% endif %}
+      {% if build and node %}
+            <div class="item">
+              {{ build.id }} {{ build.commands }} {{ build.status }} {{ build.description }} {{ build.created_date }} {{ node.id }} {{ node.workspace }} {{ node.ip_addr }} {{ node.user }}
+            </div>
+    {% endif %}
   </div>
 
 </div>
