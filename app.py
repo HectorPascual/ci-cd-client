@@ -25,12 +25,21 @@ def jobs():
         jobs = requests.get('http://localhost:5000/jobs').json()
         return render_template("index.html", jobs=jobs)
 
-@app.route('/jobs/<int:job_id>')
+@app.route('/jobs/<int:job_id>', methods=['GET','POST'])
 def job(job_id):
-    job = requests.get(f'http://localhost:5000/jobs/{job_id}').json()
-    builds = requests.get(f'http://localhost:5000/jobs/{job_id}/builds').json()
+    if request.method == 'GET':
+        job = requests.get(f'http://localhost:5000/jobs/{job_id}').json()
+        builds = requests.get(f'http://localhost:5000/jobs/{job_id}/builds').json()
+        return render_template("index.html", job=job, builds=builds)
+    elif request.method == 'POST':
+        data = {'description': request.form.get('description'),
+                'commands': request.form.get('commands'),
+                'node': request.form.get('node')}
+        requests.post(f'http://localhost:5000/jobs/{job_id}/builds',data=data)
+        job = requests.get(f'http://localhost:5000/jobs/{job_id}').json()
+        builds = requests.get(f'http://localhost:5000/jobs/{job_id}/builds').json()
+        return render_template("index.html", job=job, builds=builds)
 
-    return render_template("index.html", job=job, builds=builds)
 
 @app.route('/jobs/<int:job_id>/builds/<int:build_id>')
 def build(job_id, build_id):

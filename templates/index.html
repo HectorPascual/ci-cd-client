@@ -43,12 +43,12 @@
         </form>
       {% endif %}
       {% if create_build %}
-        <form action="/jobs/{{ job_id }}/builds" method="POST">
+        <form action="/jobs/{{ job_id }}" method="POST">
             <label for="title">Description</label>
             <input type="text" id="description" name="description" placeholder="Build description..">
             <label for="job_desc">Commands</label>
             <input type="text" id="commands" name="commands" placeholder="Build commands..">
-            <label for="job_desc">Commands</label>
+            <label for="job_desc">Node ID</label>
             <input type="text" id="node" name="node" placeholder="Node id to perform the build..">
             <input type="submit" id="node_submit" value="Submit">
         </form>
@@ -64,7 +64,7 @@
       {% endfor %}
       {% endif %}
       {% if job %}
-        <a href="/create_build/{{ job.id }}" class="button">Create new build attached to this job</a>
+        <a href="/create_build/{{ job.id }}" class="button">Create new build</a>
         <div class="item">
           JOB : {{ job.id }} {{ job.title }} {{ job.description }} {{ job.created_date }}
         </div>
