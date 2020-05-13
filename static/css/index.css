@@ -224,3 +224,9 @@ input[type=submit]:hover {
     background-color: #0061a7;
 }
 
+.form_title{
+    color: #2e4ead;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom:15px;
+}
